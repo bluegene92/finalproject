@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class FinancialCard extends StatelessWidget {
   final String title;
-  final int amount;
+  final double amount;
   final IconData iconData;
   final Color bgColor;
 
