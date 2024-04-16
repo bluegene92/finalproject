@@ -44,13 +44,9 @@ class _RecentActivityCardState extends State<RecentActivityCard> {
   Widget build(BuildContext context) {
     return BlocBuilder<ExpenseCubit, List<Expense>>(
         builder: (context, expenses) {
-      print(_currentDate);
-
       DateTime startDate = DateHelper.startWeek(_currentDate);
       DateTime endDate = DateHelper.endWeek(_currentDate);
       var filteredExpenses = filterExpenses(expenses, startDate, endDate);
-
-      String formattedDate = "";
 
       return Padding(
         padding: const EdgeInsets.all(8.0),
@@ -113,8 +109,9 @@ class _RecentActivityCardState extends State<RecentActivityCard> {
                                   ))
                             ]),
                         trailing: Text('\$${expense.amount}',
-                            style:
-                                TextStyle(color: Colors.black54, fontSize: 18)),
+                            style: const TextStyle(
+                                color: Color.fromARGB(255, 77, 148, 77),
+                                fontSize: 18)),
                       );
                     },
                   ),

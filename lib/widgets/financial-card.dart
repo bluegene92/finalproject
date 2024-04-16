@@ -42,8 +42,13 @@ class FinancialCard extends StatelessWidget {
             ),
             Row(mainAxisAlignment: MainAxisAlignment.start, children: [
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text('$title', style: TextStyle(fontSize: 24)),
-                Text('\$$amount', style: TextStyle(fontSize: 24))
+                Text('$title',
+                    style: const TextStyle(
+                        fontSize: 24,
+                        color: Colors.black87,
+                        fontWeight: FontWeight.bold)),
+                Text('\$$amount',
+                    style: const TextStyle(fontSize: 24, color: Colors.black87))
               ])
             ])
           ]),

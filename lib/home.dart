@@ -1,3 +1,4 @@
+import 'package:finalproject/widgets/weekly-navigation-bar.dart';
 import 'package:finalproject/widgets/welcome-header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,7 +25,6 @@ class _HomeState extends State<Home> {
   void previousWeek() {
     setState(() {
       currentDate = currentDate.subtract(const Duration(days: 7));
-      print(currentDate);
     });
   }
 
@@ -44,9 +44,9 @@ class _HomeState extends State<Home> {
       DateTime endDate = DateHelper.endWeek(currentDate);
       var filteredExpenses =
           ExpenseHelper.filterExpenses(expenses, startDate, endDate);
-
       double totalExpenses = filteredExpenses.fold(
           0, (previousValue, expense) => previousValue + expense.amount);
+
       return Scaffold(
           floatingActionButton: FloatingActionButton(
               onPressed: () {
@@ -96,43 +96,40 @@ class _HomeState extends State<Home> {
                                               BorderRadius.circular(25.0)),
                                     ),
                                   ),
+                                  const SizedBox(height: 16.0),
                                   Container(
                                     width: double.infinity,
-                                    child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            foregroundColor: Colors.white,
-                                            backgroundColor: Colors
-                                                .green // Set the background color to blue
-                                            ),
-                                        onPressed: () {
-                                          if (_expenseController
-                                              .text.isNotEmpty) {
-                                            setState(() {
-                                              double value = double.parse(
-                                                  _expenseController.text);
-                                              String description =
-                                                  _descriptionController.text;
-                                              Expense expense = Expense(
-                                                  amount: value,
-                                                  date: DateTime.now(),
-                                                  description: description);
+                                    child: SizedBox(
+                                      height: 60,
+                                      child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              foregroundColor: Colors.white,
+                                              backgroundColor:
+                                                  const Color.fromRGBO(
+                                                      110, 219, 110, 1.0)
+                                              // Set the background color to blue
+                                              ),
+                                          onPressed: () {
+                                            if (_expenseController
+                                                .text.isNotEmpty) {
+                                              setState(() {
+                                                double value = double.parse(
+                                                    _expenseController.text);
+                                                String description =
+                                                    _descriptionController.text;
+                                                Expense expense = Expense(
+                                                    amount: value,
+                                                    date: DateTime.now(),
+                                                    description: description);
 
-                                              expenseCubit.addExpense(expense);
-                                            });
-                                          }
-
-                                          print('close modal');
-
-                                          _scrollController.animateTo(
-                                            _scrollController
-                                                .position.maxScrollExtent,
-                                            duration:
-                                                Duration(milliseconds: 500),
-                                            curve: Curves.easeInOut,
-                                          );
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: Text('Add')),
+                                                expenseCubit
+                                                    .addExpense(expense);
+                                              });
+                                            }
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: const Text('Add')),
+                                    ),
                                   )
                                   // Add more widgets as needed
                                 ],
@@ -143,32 +140,13 @@ class _HomeState extends State<Home> {
                   },
                 );
               },
-              backgroundColor: Colors.green,
+              backgroundColor: const Color.fromARGB(255, 86, 192, 86),
               shape: const CircleBorder(),
               child: const Icon(Icons.plus_one, color: Colors.white)),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
-          bottomNavigationBar: Container(
-            height: 58,
-            child: BottomAppBar(
-                color: const Color.fromRGBO(221, 222, 253, 1.0),
-                shape: const CircularNotchedRectangle(),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(
-                      height: 40,
-                      child: IconButton(
-                        icon: const Icon(Icons.arrow_left),
-                        onPressed: previousWeek,
-                      ),
-                    ),
-                    IconButton(
-                        icon: const Icon(Icons.arrow_right),
-                        onPressed: nextWeek)
-                  ],
-                )),
-          ),
+          bottomNavigationBar: WeeklyNavigationBar(
+              previousWeek: previousWeek, nextWeek: nextWeek),
           body: Builder(builder: (context) {
             return SafeArea(
               child: Container(
