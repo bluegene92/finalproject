@@ -1,8 +1,10 @@
 import 'package:finalproject/home.dart';
+import 'package:finalproject/services/expense_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(BlocProvider(create: (_) => ExpenseCubit(), child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
