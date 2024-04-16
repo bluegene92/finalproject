@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'models/expense.dart';
 import 'services/expense_cubit.dart';
+import 'utility/date-helper.dart';
+import 'utility/expense-helper.dart';
 import 'widgets/financial-card.dart';
 import 'widgets/recent-activity-card.dart';
 
@@ -17,6 +19,21 @@ class _HomeState extends State<Home> {
   TextEditingController _expenseController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
   double expenseValue = 0.0;
+  late DateTime currentDate = DateTime.now();
+
+  void previousWeek() {
+    setState(() {
+      currentDate = currentDate.subtract(Duration(days: 7));
+      print(currentDate);
+    });
+  }
+
+  void nextWeek() {
+    setState(() {
+      currentDate = currentDate.add(Duration(days: 7));
+      print(currentDate);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +41,12 @@ class _HomeState extends State<Home> {
 
     return BlocBuilder<ExpenseCubit, List<Expense>>(
         builder: (context, expenses) {
-      double totalExpenses = expenses.fold(
+      DateTime startDate = DateHelper.startWeek(currentDate);
+      DateTime endDate = DateHelper.endWeek(currentDate);
+      var filteredExpenses =
+          ExpenseHelper.filterExpenses(expenses, startDate, endDate);
+
+      double totalExpenses = filteredExpenses.fold(
           0, (previousValue, expense) => previousValue + expense.amount);
       return Scaffold(
           floatingActionButton: FloatingActionButton(
@@ -42,7 +64,8 @@ class _HomeState extends State<Home> {
                             controller: _scrollController,
                             child: Container(
                               alignment: Alignment.topLeft,
-                              padding: EdgeInsets.symmetric(horizontal: 32.0),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 32.0),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
@@ -61,7 +84,7 @@ class _HomeState extends State<Home> {
                                               BorderRadius.circular(25.0)),
                                     ),
                                   ),
-                                  SizedBox(height: 32.0),
+                                  const SizedBox(height: 32.0),
                                   const Text(
                                     'Description',
                                     style: TextStyle(fontSize: 24.0),
@@ -121,27 +144,29 @@ class _HomeState extends State<Home> {
                   },
                 );
               },
-              child: Icon(Icons.plus_one, color: Colors.white),
               backgroundColor: Colors.green,
-              shape: CircleBorder()),
+              shape: CircleBorder(),
+              child: Icon(Icons.plus_one, color: Colors.white)),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
           bottomNavigationBar: Container(
-            height: 48,
+            height: 58,
             child: BottomAppBar(
                 color: const Color.fromRGBO(221, 222, 253, 1.0),
-                shape: CircularNotchedRectangle(),
+                shape: const CircularNotchedRectangle(),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    IconButton(
-                      icon: Icon(Icons.arrow_left),
-                      onPressed: () {},
+                    SizedBox(
+                      height: 40,
+                      child: IconButton(
+                        icon: const Icon(Icons.arrow_left),
+                        onPressed: previousWeek,
+                      ),
                     ),
                     IconButton(
-                      icon: Icon(Icons.arrow_right),
-                      onPressed: () {},
-                    )
+                        icon: const Icon(Icons.arrow_right),
+                        onPressed: nextWeek)
                   ],
                 )),
           ),
@@ -154,11 +179,11 @@ class _HomeState extends State<Home> {
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    WelcomeHeader(),
+                    WelcomeHeader(date: currentDate),
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          FinancialCard(
+                          const FinancialCard(
                             title: "Income",
                             amount: 445,
                             iconData: Icons.account_balance,
@@ -170,7 +195,7 @@ class _HomeState extends State<Home> {
                               iconData: Icons.attach_money,
                               bgColor: Color.fromRGBO(229, 239, 238, 1)),
                         ]),
-                    RecentActivityCard()
+                    RecentActivityCard(date: currentDate)
                   ],
                 ),
               ),
