@@ -52,7 +52,7 @@ class _WelcomeHeaderState extends State<WelcomeHeader> {
           const Text("Good Morning!", style: TextStyle(fontSize: 24)),
           Text(
               "${DateFormat("MMM dd, yy").format(startDate)} to ${DateFormat("MMM dd, yy").format(endDate)}",
-              style: TextStyle(fontSize: 18))
+              style: const TextStyle(fontSize: 18))
         ],
       ),
     );

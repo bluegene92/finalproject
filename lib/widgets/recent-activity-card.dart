@@ -74,7 +74,7 @@ class _RecentActivityCardState extends State<RecentActivityCard> {
                   child: ListView.builder(
                     itemCount: filteredExpenses.length,
                     itemBuilder: (context, index) {
-                      expenses.sort((a, b) => b.date.compareTo(a.date));
+                      filteredExpenses.sort((a, b) => b.date.compareTo(a.date));
                       Expense expense = filteredExpenses[index];
                       String formattedDate =
                           DateFormat("MM/dd/yyy").format(expense.date);

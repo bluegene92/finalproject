@@ -16,29 +16,28 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  TextEditingController _expenseController = TextEditingController();
-  TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _expenseController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
   double expenseValue = 0.0;
   late DateTime currentDate = DateTime.now();
 
   void previousWeek() {
     setState(() {
-      currentDate = currentDate.subtract(Duration(days: 7));
+      currentDate = currentDate.subtract(const Duration(days: 7));
       print(currentDate);
     });
   }
 
   void nextWeek() {
     setState(() {
-      currentDate = currentDate.add(Duration(days: 7));
-      print(currentDate);
+      currentDate = currentDate.add(const Duration(days: 7));
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final expenseCubit = BlocProvider.of<ExpenseCubit>(context);
-
+    // expenseCubit.generateRandomData();
     return BlocBuilder<ExpenseCubit, List<Expense>>(
         builder: (context, expenses) {
       DateTime startDate = DateHelper.startWeek(currentDate);
@@ -145,8 +144,8 @@ class _HomeState extends State<Home> {
                 );
               },
               backgroundColor: Colors.green,
-              shape: CircleBorder(),
-              child: Icon(Icons.plus_one, color: Colors.white)),
+              shape: const CircleBorder(),
+              child: const Icon(Icons.plus_one, color: Colors.white)),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
           bottomNavigationBar: Container(
@@ -174,7 +173,7 @@ class _HomeState extends State<Home> {
             return SafeArea(
               child: Container(
                 width: double.infinity,
-                color: Color.fromRGBO(229, 239, 237, 1.0),
+                color: const Color.fromRGBO(229, 239, 237, 1.0),
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -185,7 +184,7 @@ class _HomeState extends State<Home> {
                         children: [
                           const FinancialCard(
                             title: "Income",
-                            amount: 445,
+                            amount: 600,
                             iconData: Icons.account_balance,
                             bgColor: Color.fromRGBO(169, 247, 185, 1),
                           ),
@@ -193,7 +192,7 @@ class _HomeState extends State<Home> {
                               title: "Expense",
                               amount: totalExpenses,
                               iconData: Icons.attach_money,
-                              bgColor: Color.fromRGBO(229, 239, 238, 1)),
+                              bgColor: const Color.fromRGBO(229, 239, 238, 1)),
                         ]),
                     RecentActivityCard(date: currentDate)
                   ],
