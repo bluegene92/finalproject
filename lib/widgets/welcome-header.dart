@@ -48,10 +48,10 @@ class _WelcomeHeaderState extends State<WelcomeHeader> {
         children: [
           const Text("Expense Tracker",
               style: TextStyle(
-                  fontSize: 48, height: 0.8, fontWeight: FontWeight.bold)),
-          const Text("Dat", style: TextStyle(fontSize: 24)),
+                  fontSize: 48, height: 0.9, fontWeight: FontWeight.bold)),
+          const Text("Good Morning!", style: TextStyle(fontSize: 24)),
           Text(
-              "${DateFormat("M/dd/yyy").format(startDate)} - ${DateFormat("M/dd/yyy").format(endDate)}",
+              "${DateFormat("MMM dd, yy").format(startDate)} to ${DateFormat("MMM dd, yy").format(endDate)}",
               style: TextStyle(fontSize: 18))
         ],
       ),

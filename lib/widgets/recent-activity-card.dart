@@ -50,12 +50,14 @@ class _RecentActivityCardState extends State<RecentActivityCard> {
       DateTime endDate = DateHelper.endWeek(_currentDate);
       var filteredExpenses = filterExpenses(expenses, startDate, endDate);
 
+      String formattedDate = "";
+
       return Padding(
         padding: const EdgeInsets.all(8.0),
         child: Center(
           child: Container(
             width: 390,
-            height: 390,
+            height: 385,
             decoration: BoxDecoration(
                 color: const Color.fromRGBO(211, 230, 227, 1.0),
                 border: Border.all(color: Colors.black87, width: 3.0),
@@ -76,6 +78,15 @@ class _RecentActivityCardState extends State<RecentActivityCard> {
                       Expense expense = filteredExpenses[index];
                       String formattedDate =
                           DateFormat("MM/dd/yyy").format(expense.date);
+
+                      if (DateHelper.isToday(expense.date)) {
+                        formattedDate = "Today";
+                      }
+
+                      if (DateHelper.isYesterday(expense.date)) {
+                        formattedDate = "Yesterday";
+                      }
+
                       return ListTile(
                         leading: Container(
                           width: 40,
