@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
+  ExpenseCubit expenseCubit = ExpenseCubit();
+  expenseCubit.generateRandomData();
+
   runApp(BlocProvider(create: (_) => ExpenseCubit(), child: const MyApp()));
 }
 
